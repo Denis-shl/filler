@@ -9,7 +9,7 @@
 # define LEN_FIGURES 5
 # define PLAYER "$$$ exec"
 # define LEN_PLAYER 8
-
+# define NAME_PLAYER "oargrave.filler"
 /*
  * Define ERROR
 */
@@ -21,16 +21,18 @@
  *define types
 */ 
 
-typedef unsigned int  VERTICAL;
-typedef unsigned int HORIZONTAL;
-typedef unsigned int un_int;
+typedef unsigned int	VERTICAL;
+typedef unsigned int	HORIZONTAL;
+typedef unsigned int	un_int;
 /*
 **	func read virtual map and tetremins
 */
 
 char	**ft_read_map(void);
 void	ft_identify_player(const char *str);
-int		ft_free();
+int		ft_free(void);
+void	finding_place_for_figure(void);
+
 typedef struct s_coord
 {
 	int			x;
