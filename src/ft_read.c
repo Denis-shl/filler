@@ -4,6 +4,8 @@
 char		**playing_field = NULL;
 char		**figures_field = NULL;
 extern char	player;
+VERTICAL	map_size_y;
+HORIZONTAL	map_size_x;
 
 int		ft_lennumb(int num)
 {
@@ -65,8 +67,9 @@ int		mem_alloc_card(const char *str)
 		index++;
 	}
 	ft_record_map(y);
+	map_size_x = x;
+	map_size_y = y;
 	return (SUCSES);
-
 }
 
 void	ft_record_figures(VERTICAL y)
