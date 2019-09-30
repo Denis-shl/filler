@@ -13,6 +13,7 @@ extern HORIZONTAL	map_size_x;
 
 int        count_contact(int y, int x)
 {
+	int 	iooooo;
     int    i;
     int    i2;
     int    o;
