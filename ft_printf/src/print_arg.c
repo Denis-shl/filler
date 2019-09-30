@@ -6,7 +6,7 @@
 /*   By: yquaro <yquaro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 13:41:45 by oargrave          #+#    #+#             */
-/*   Updated: 2019/08/02 17:19:56 by yquaro           ###   ########.fr       */
+/*   Updated: 2019/09/30 20:40:32 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	width_processing(char *str)
 {
-	int		size;
-	int		width;
+	size_t		size;
+	int			width;
 
 	width = 0;
 	size = ft_strlen(str);
@@ -44,7 +44,7 @@ int		check_str(char *str)
 	index = 0;
 	while (str[index] != '\0')
 	{
-		if (str[index] < 0 || (str[index] > 127))
+		if (str[index] < 0 || ((int)str[index] > 127))
 		{
 			return (-1);
 		}

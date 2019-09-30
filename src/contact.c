@@ -61,7 +61,6 @@ int        placable(int i, int i2)
     count = 0;
     if (i + g_piece.size_y > map_size_y || i2 + g_piece.size_x > map_size_x)
     {
-         printf ("vse ok");
         return (1);
     }
     while (++j <= ((int)g_piece.size_y - 1))
@@ -76,7 +75,6 @@ int        placable(int i, int i2)
             if (figures_field[j][j2] == '*' && (playing_field[i + j][i2 + j2] ==
                                                 player_my[0] || playing_field[i + j][i2 + j2] == player_my[0] - 32))
                 {
-                    printf ("count ++\n");
                     count++;
                 }
         }
@@ -109,7 +107,9 @@ int        contact_l()
             {
                 return (0);
             }
+			j--;
         }
+		i--;
     }
     return (1);
 }
@@ -125,20 +125,15 @@ int        contact_r()
     g_piece.final_x = 0;
     g_piece.final_y = 0;
     ret = 0;
-    printf ("%d\n", map_size_y);
-    printf ("%d\n", map_size_x);
     while (++i < map_size_y - 1)
     {
         j = -1;
         while (++j < map_size_x - 1)
         {
-            ft_printf("{%d} {%d}", i, j);
             ret = placable(i, j);
-            ft_printf (" {%d}\n", ret);
             if (ret == 0)
             {
-                //  for(int  i = 0; playing_field[i]; i++)
-                // printf ("%s\n", playing_field[i]);
+				ft_printf("%d %d\n", g_piece.final_y, g_piece.final_x);
                 return (0);
             }
         }

@@ -88,13 +88,13 @@ int		finding_place_for_figure()
 	{
 		if (start_my_y < start_enemy_y)
 		{
-            printf ("{contact_l}\n");
+			printf ("one\n");
 			if (contact_l() == 1)
 				return (1);
 		}
 		else if (start_my_y >= start_enemy_y)
 		{
-            printf ("{contact_r}\n");
+			printf ("two %s {%d} {%d}\n", player_my, start_my_y, start_enemy_y);
 			if (contact_r() == 1)
 				return (1) ;
 		}

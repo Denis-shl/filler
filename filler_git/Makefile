@@ -6,7 +6,7 @@
 #    By: lcharvol <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/30 03:23:24 by lcharvol          #+#    #+#              #
-#    Updated: 2017/01/30 03:23:25 by lcharvol         ###   ########.fr        #
+#    Updated: 2019/09/30 20:54:16 by oargrave         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,13 +30,13 @@ newline:
 
 $(NAME): $(OBJ)
 	make -C libft
-	make -C visualisateur
+	#make -C visualisateur
 	gcc -o $(NAME) $(FLAGS) $(OBJ) libft/libft.a
 	echo "Filler done"
 
 clean:
 	make clean -C libft
-	make clean -C visualisateur
+	#make clean -C visualisateur
 	rm -f $(OBJ)
 
 fclean: clean

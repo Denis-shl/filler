@@ -51,8 +51,7 @@ int	go_contact2(t_map *map, t_piece *p)
 	p->final_x = 0;
 	p->final_y = 0;
 	ret = 0;
-	printf ("%d\n", map->map_size_y);
-	printf ("%d\n", map->map_size_x);
+	
 	while (++i < map->map_size_y - 1)
 	{
 		i2 = -1;
@@ -86,7 +85,7 @@ int	big_map(t_map *map, t_piece *p)
 		}
 		else if (map->my_pos_y >= map->pos_enemy_y)
 		{
-			if (go_contact2(map, p) == 1)
+			if (go_coontact2(map, p) == 1)
 				return (1);
 		}
 	}

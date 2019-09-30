@@ -133,15 +133,14 @@ int			main(void)
 	while (1)
 	{
 		get_the_ret(map, p); // у нас есть поле! и начальные  реальные координаты фигуры которую надо поставить
-		
-		{
 			if (play(map, p) == 1)
-			if (last_try(map, p) == 1)
 			{
-				printf ("{1}\n");
-				print_result(p, map);
-				exit(1);
-			}
+				if (last_try(map, p) == 1)
+				{
+					printf ("{1}\n");
+					print_result(p, map);
+					exit(1);
+				}
 		}
 	}
 	free(p->piece);

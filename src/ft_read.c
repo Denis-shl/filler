@@ -7,10 +7,10 @@ extern char	*player_my;
 extern char *player_en;
 VERTICAL	map_size_y;
 HORIZONTAL	map_size_x;
-un_int		start_my_x;
-un_int		start_my_y;
-un_int		start_enemy_x;
-un_int		start_enemy_y;
+un_int		start_my_x = 0;
+un_int		start_my_y = 0;
+un_int		start_enemy_x = 0;
+un_int		start_enemy_y = 0;
 
 int		ft_lennumb(int num)
 {
@@ -37,14 +37,11 @@ void	ft_record_map(VERTICAL y)
 	index = 0;
 	get_next_line(0, &str);
 	free(str);
-//	ft_printf ("DEBUG ft_record_map!!\n"); // debug
-	while ((status_read = get_next_line(0, &str)) && (index < y))
+	while (index < y)
 	{
-		if (status_read == 0)
-		{
-			ft_printf ("ERROR read gnl!!\n{ft_record_map}\n");
-		}
-			playing_field[index] =  ft_strcpy(playing_field[index], str + 4);
+		get_next_line(0, &str);
+		playing_field[index] =  ft_strcpy(playing_field[index], str + 4);
+		free(str);
 		index++;
 	}
 }
@@ -53,6 +50,7 @@ void	start_pos()
 {
 	un_int i;
 	static un_int j;
+	printf ("j = {%d}\n", map_size_y);
 
 	if (j == map_size_y)
 		return ;
@@ -63,7 +61,7 @@ void	start_pos()
 		while (++i < map_size_x)
 		{
 			if ((playing_field[j][i] == player_my[0])
-					|| (playing_field[i][j] == player_my[1]))
+					|| (playing_field[j][i] == player_my[1]))
 			{
 				start_my_x = i;
 				start_my_y = j;
@@ -71,11 +69,12 @@ void	start_pos()
 			if((playing_field[j][i] == player_en[0])
 					|| (playing_field[j][i] == player_en[1]))
 			{
-				start_enemy_x = j;
-				start_enemy_y = i;
+				start_enemy_x = i;
+				start_enemy_y = j;
 			}
 		}
 	}
+	printf ("x_my = {%d} x_en = {%d} y_my = {%d} y_en = {%d}\n",start_my_x, start_enemy_x, start_my_y, start_enemy_y);
 }
 
 int		mem_alloc_card(const char *str)
@@ -84,16 +83,12 @@ int		mem_alloc_card(const char *str)
 	VERTICAL		y;
 	HORIZONTAL		x;
 	un_int			index;
-	/*
-	 * Plateau 15 17
-	 * 0123456789012
-	*/
+	
 	index = 0;
 	size_map = (char *)str + (LEN_MAPS + 1);
 	y = ft_atoi(size_map);
 	size_map += ft_lennumb(y) + 1;
 	x = ft_atoi(size_map);
-//	ft_printf ("x = {%d}\ny = {%d}\n",x, y);
 	playing_field = (char **)malloc((y + 1) * (sizeof(char *)));
 	playing_field[y] = NULL;
 	while (index < y)
@@ -102,9 +97,9 @@ int		mem_alloc_card(const char *str)
 		index++;
 	}
 	ft_record_map(y);
-	start_pos();
 	map_size_x = x;
 	map_size_y = y;
+	start_pos();
 	return (SUCSES);
 }
 
@@ -153,14 +148,16 @@ void	ft_record_figures(VERTICAL y)
 	{
 		if (status_read == 0)
 		{
-			ft_printf ("ERROR read gnl!!\n{ft_record_figures}\n");
+			ft_printf ("ERROR read gnl!!\n{ft_record_figures}\n"); // fix 
 			return ;
 		}
 		figures_field[index] = ft_strcpy(figures_field[index], str);
+		// ft_printf ("%s\n", figures_field[index]);
 		index++;
 	}
 	real_pos_figures();
 }
+
 void	mem_alloc_figures(const char *str)
 {
 	char			*size_map;
@@ -217,8 +214,9 @@ char	**ft_read_map(void)
 	int		status_read;
 
 	map = NULL;
-	while ((status_read = get_next_line(0, &map)))
+	while (1)
 	{
+		get_next_line(0, &map);
 		if (ft_strncmp(map, PLAYER, LEN_PLAYER) == 0)
 		{
 			ft_identify_player(map);
@@ -234,18 +232,18 @@ char	**ft_read_map(void)
 			{
 				if (last_try() == 1)
 				{
-					ft_printf ("{4}%d %d\n", g_piece.final_x, g_piece.final_y);
+					ft_printf ("%d %d\n", g_piece.final_x, g_piece.final_y);
 					exit (1);
 				}
 			}
 		}
 			free(map);
 		}
-//	ft_printf ("player = {%s}\n", player_my);
+	// ft_printf ("player = {%s}\n", player_my);
 	// for (int i = 0; playing_field[i]; i++)
 	// 	ft_printf ("%s\n", playing_field[i]);
-//	for (int i = 0; figures_field[i]; i++)
-//		ft_printf ("%s\n",figures_field[i]);
+	// for (int i = 0; figures_field[i]; i++)
+	// 	ft_printf ("%s\n",figures_field[i]);
 	ft_free();
 	return (NULL);
 }
