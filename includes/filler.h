@@ -31,12 +31,30 @@ typedef unsigned int	un_int;
 char	**ft_read_map(void);
 void	ft_identify_player(const char *str);
 int		ft_free(void);
-void	finding_place_for_figure(void);
+int		finding_place_for_figure(void);
+void	print_result();
+int     contact(void);
+int     placable_two(int count, int i, int i2);
+int     placable(int i, int i2);
+int     contact_l();
+int     contact_r();
 
-typedef struct s_coord
+typedef struct s_piece
 {
-	int			x;
-	int			 y;
-}	t_cord;
+	un_int	real_x;
+	un_int	real_y;
+	un_int	size_x;
+	un_int	size_y;
+	un_int	start_x;
+	un_int	start_y;
+	un_int	end_x;
+	un_int	end_y;
+	int		final_x;
+	int		final_y;
+	int		tmp_x;
+	int		tmp_y;
+	int		nbr_contact;
+}t_piece;
 
+t_piece				g_piece;
 #endif

@@ -6,7 +6,7 @@
 /*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/31 02:29:43 by lcharvol          #+#    #+#             */
-/*   Updated: 2019/09/29 21:34:10 by oargrave         ###   ########.fr       */
+/*   Updated: 2019/09/30 18:06:44 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,14 +129,16 @@ int			main(void)
 	map = (t_map *)malloc(sizeof(*map));
 	p = (t_piece *)malloc(sizeof(*p));
 	init_struct(map, p);
-	get_player(map);
+	get_player(map); // определяем игрока
 	while (1)
 	{
 		get_the_ret(map, p); // у нас есть поле! и начальные  реальные координаты фигуры которую надо поставить
-		if (play(map, p) == 1)
+		
 		{
+			if (play(map, p) == 1)
 			if (last_try(map, p) == 1)
 			{
+				printf ("{1}\n");
 				print_result(p, map);
 				exit(1);
 			}

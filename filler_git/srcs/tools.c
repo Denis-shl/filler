@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcharvol <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 06:28:13 by lcharvol          #+#    #+#             */
-/*   Updated: 2017/02/01 06:28:14 by lcharvol         ###   ########.fr       */
+/*   Updated: 2019/09/30 18:49:04 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,18 @@ int		is_placable(int i, int i2, t_map *map, t_piece *p)
 				return (1);
 			if (p->piece[j][j2] == '*' && (map->map[i + j][i2 + j2] ==
 				map->me[0] || map->map[i + j][i2 + j2] == map->me[0] - 32))
-				count++;
+				{	
+					printf ("count ++\n");
+					count++;
+				}
 		}
 	}
 	if (is_placable2(p, count, i, i2) == 0)
+	{
+		for(int i = 0; map->map[i]; i++)
+			printf("%s\n", map->map[i]);
 		return (0);
+	}
 	return (1);
 }
 
@@ -90,6 +97,7 @@ int		last_try(t_map *map, t_piece *p)
 			ret = is_placable(i, i2, map, p);
 			if (ret == 0)
 			{
+				printf ("{last}\n");
 				print_result(p, map);
 				return (0);
 			}

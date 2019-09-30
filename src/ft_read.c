@@ -3,9 +3,14 @@
 
 char		**playing_field = NULL;
 char		**figures_field = NULL;
-extern char	player;
+extern char	*player_my;
+extern char *player_en;
 VERTICAL	map_size_y;
 HORIZONTAL	map_size_x;
+un_int		start_my_x;
+un_int		start_my_y;
+un_int		start_enemy_x;
+un_int		start_enemy_y;
 
 int		ft_lennumb(int num)
 {
@@ -28,9 +33,10 @@ void	ft_record_map(VERTICAL y)
 	char	*str;
 
 	status_read = 0;
-//	ft_printf ("x = {%d}\n",  y);
 	str = NULL;
 	index = 0;
+	get_next_line(0, &str);
+	free(str);
 //	ft_printf ("DEBUG ft_record_map!!\n"); // debug
 	while ((status_read = get_next_line(0, &str)) && (index < y))
 	{
@@ -38,8 +44,37 @@ void	ft_record_map(VERTICAL y)
 		{
 			ft_printf ("ERROR read gnl!!\n{ft_record_map}\n");
 		}
-		playing_field[index] =  ft_strcpy(playing_field[index], str);
+			playing_field[index] =  ft_strcpy(playing_field[index], str + 4);
 		index++;
+	}
+}
+
+void	start_pos()
+{
+	un_int i;
+	static un_int j;
+
+	if (j == map_size_y)
+		return ;
+	j = 0;
+	while (++j < map_size_y)
+	{
+		i = 0;
+		while (++i < map_size_x)
+		{
+			if ((playing_field[j][i] == player_my[0])
+					|| (playing_field[i][j] == player_my[1]))
+			{
+				start_my_x = i;
+				start_my_y = j;
+			}
+			if((playing_field[j][i] == player_en[0])
+					|| (playing_field[j][i] == player_en[1]))
+			{
+				start_enemy_x = j;
+				start_enemy_y = i;
+			}
+		}
 	}
 }
 
@@ -67,9 +102,42 @@ int		mem_alloc_card(const char *str)
 		index++;
 	}
 	ft_record_map(y);
+	start_pos();
 	map_size_x = x;
 	map_size_y = y;
 	return (SUCSES);
+}
+
+void	real_pos_figures(void)
+{
+	un_int	index;
+	un_int	jindex;
+
+	g_piece.start_x = g_piece.size_x;
+	g_piece.start_y = g_piece.size_x;
+	index = 0;
+	while (index < g_piece.size_y)
+	{
+		jindex = 0;
+		while (jindex < g_piece.size_x)
+		{
+			if (figures_field[index][jindex] == '*')
+			{
+				if (jindex < g_piece.start_x)
+					g_piece.start_x = jindex;
+				if (jindex > g_piece.end_x)
+					g_piece.end_x = jindex;
+				if (index < g_piece.start_y)
+					g_piece.start_y = index;
+				if (index > g_piece.end_y)
+					g_piece.end_y = index;
+			}
+			jindex++;
+		}
+		index++;
+	}
+	g_piece.real_x = (g_piece.end_x - g_piece.start_x) + 1;
+	g_piece.real_y = (g_piece.end_y - g_piece.start_y) + 1;
 }
 
 void	ft_record_figures(VERTICAL y)
@@ -91,6 +159,7 @@ void	ft_record_figures(VERTICAL y)
 		figures_field[index] = ft_strcpy(figures_field[index], str);
 		index++;
 	}
+	real_pos_figures();
 }
 void	mem_alloc_figures(const char *str)
 {
@@ -111,9 +180,36 @@ void	mem_alloc_figures(const char *str)
 		 figures_field[index] = (char *)malloc((x + 1) * (sizeof(char)));
 		 index++;
 	}
-//	ft_printf ("x = {%d}\n y = {%d}\n", x ,y); // debug
 	ft_record_figures(y);
+	g_piece.size_x = x;
+	g_piece.size_y = y;
 	return ;
+}
+
+int        last_try()
+{
+    int    i;
+    int    i2;
+    int    ret;
+    
+    i = -1;
+    g_piece.final_x = 0;
+    g_piece.final_y = 0;
+    ret = 0;
+    while (++i < (int)map_size_y - 1)
+    {
+        i2 = -1;
+        while (++i2 < (int)map_size_x - 1)
+        {
+            ret = placable(i, i2);
+            if (ret == 0)
+            {
+                ft_printf ("%d %d\n",g_piece.final_x, g_piece.final_y);
+                return (0);
+            }
+        }
+    }
+    return (1);
 }
 char	**ft_read_map(void)
 {
@@ -134,21 +230,22 @@ char	**ft_read_map(void)
 		else if (ft_strncmp(map, FIGURES, LEN_FIGURES) == 0)
 		{
 			mem_alloc_figures(map);
-			finding_place_for_figure();
+			if (finding_place_for_figure() == 1)
+			{
+				if (last_try() == 1)
+				{
+					ft_printf ("{4}%d %d\n", g_piece.final_x, g_piece.final_y);
+					exit (1);
+				}
+			}
 		}
-		else if (status_read == -1)
-		{
-			ft_printf ("ERROR read gnl!!\n");
 			free(map);
-			return (NULL);// debug and fix
 		}
-		free(map);
-	}
-	ft_printf ("player = {%c}\n", player);
-	for (int i = 0; playing_field[i]; i++)
-		ft_printf ("%s\n", playing_field[i]);
-	for (int i = 0; figures_field[i]; i++)
-		ft_printf ("%s\n",figures_field[i]);
+//	ft_printf ("player = {%s}\n", player_my);
+	// for (int i = 0; playing_field[i]; i++)
+	// 	ft_printf ("%s\n", playing_field[i]);
+//	for (int i = 0; figures_field[i]; i++)
+//		ft_printf ("%s\n",figures_field[i]);
 	ft_free();
 	return (NULL);
 }

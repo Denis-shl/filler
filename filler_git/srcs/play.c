@@ -6,7 +6,7 @@
 /*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 08:17:08 by lcharvol          #+#    #+#             */
-/*   Updated: 2019/09/29 21:38:27 by oargrave         ###   ########.fr       */
+/*   Updated: 2019/09/30 18:18:57 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	go_contact1(t_map *map, t_piece *p)
 			ret = is_placable(i, i2, map, p);
 			if (ret == 0)
 			{
+				printf ("{3}\n");
 				print_result(p, map);
 				return (0);
 			}
@@ -50,14 +51,19 @@ int	go_contact2(t_map *map, t_piece *p)
 	p->final_x = 0;
 	p->final_y = 0;
 	ret = 0;
+	printf ("%d\n", map->map_size_y);
+	printf ("%d\n", map->map_size_x);
 	while (++i < map->map_size_y - 1)
 	{
 		i2 = -1;
 		while (++i2 < map->map_size_x - 1)
 		{
+			printf("{%d} {%d}", i, i2);
 			ret = is_placable(i, i2, map, p);
+			printf (" {%d}\n", ret);
 			if (ret == 0)
 			{
+				printf ("{21}\n");
 				print_result(p, map);
 				return (0);
 			}

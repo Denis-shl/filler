@@ -1,7 +1,9 @@
 #include "../includes/filler.h"
 
-
-char	player = '!';
+char	*player_my = NULL;
+char	*player_en = NULL;
+char	play_one[] = "Oo";
+char	play_two[] = "Xx";
 
 void	ft_identify_player(const char *str)
 {
@@ -12,7 +14,7 @@ void	ft_identify_player(const char *str)
 */ 
 	if (ft_strstr(str, NAME_PLAYER) == NULL)
 	{
-//		ft_printf ("NOT NAME!!\n"); // debug
+		ft_printf ("NOT NAME!!\n"); // debug
 		return ;
 	}
 	else
@@ -20,11 +22,14 @@ void	ft_identify_player(const char *str)
 		str_name = ((char *)str + (LEN_PLAYER + 2));
 		if (str_name[0] == '1')
 		{
-			player = 'O';
+			player_my = play_one;
+			player_en = play_two;
+
 		}
 		else if (str_name[0] == '2')
 		{
-			player = 'X';
+			player_my = play_two;
+			player_en = play_one;
 		}
 	}
 }

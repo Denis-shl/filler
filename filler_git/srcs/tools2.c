@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcharvol <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 15:25:33 by lcharvol          #+#    #+#             */
-/*   Updated: 2017/02/26 15:25:35 by lcharvol         ###   ########.fr       */
+/*   Updated: 2019/09/30 18:07:20 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int		algo3_2(int nbr_contact, t_piece *p, t_map *map)
 		return (0);
 	p->final_x = p->tmp_x;
 	p->final_y = p->tmp_y;
+	printf ("{algol3}\n");
 	print_result(p, map);
 	return (1);
 }
