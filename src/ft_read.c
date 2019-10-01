@@ -11,6 +11,7 @@ un_int		start_my_x = 0;
 un_int		start_my_y = 0;
 un_int		start_enemy_x = 0;
 un_int		start_enemy_y = 0;
+short		**heat_map = NULL;
 
 int		ft_lennumb(int num)
 {
@@ -25,6 +26,133 @@ int		ft_lennumb(int num)
 	return (len);
 }
 
+static void	create_heat_map(void)
+{
+	un_int index;
+	un_int jindex;
+
+	index = 0;
+	jindex = 0;
+	heat_map = (short **)malloc(map_size_y * (sizeof(short *)));
+	while (index < map_size_y)
+	{
+		heat_map[index] = (short *)malloc(map_size_x * (sizeof(short)));
+		jindex = 0;
+		while (jindex < map_size_x)
+		{
+			if (playing_field[index][jindex] == '.')
+				heat_map[index][jindex] = 0;
+			else if (playing_field[index][jindex] == player_my[0]
+			|| playing_field[index][jindex] == player_my[1])
+				heat_map[index][jindex] = -2;
+			else if ((playing_field[index][jindex] == player_en[0]
+			|| playing_field[index][jindex] == player_en[1]))
+				heat_map[index][jindex] = -1;
+				jindex++;
+		}
+		index++;
+	}
+}
+
+void	init_heat_map_two(int x, int y)
+{
+	if (x + 1 < map_size_x && heat_map[y][x + 1] == -1)
+		heat_map[y][x] = 1;
+	if (y + 1 < map_size_y && heat_map[y + 1][x] == -1)
+		heat_map[y][x] = 1;
+	if (x + 1 < map_size_x && y + 1 < map_size_y && heat_map[y + 1][x + 1] == -1)
+		heat_map[y][x] = 1;
+	if (x + 1 < map_size_x && y - 1 >= 0 && heat_map[y - 1][x + 1] == -1)
+		heat_map[y][x] = 1;
+	if (x - 1 >= 0 && heat_map[y][x - 1] == -1)
+		heat_map[y][x] = 1;
+	if (y - 1 >= 0 && heat_map[y - 1][x] == -1)
+		heat_map[y][x] = 1;
+	if (x - 1 >= 0 && y + 1 < map_size_y && heat_map[y + 1][x - 1] == -1)
+		heat_map[y][x] = 1;
+	if (x - 1 >= 0 && y - 1 >= 0 && heat_map[y - 1][x - 1] == -1)
+		heat_map[y][x] = 1;
+}
+
+void	init_heat_map()
+{
+	int x;
+	int y;
+	int i;
+
+	y = 0;
+	i = 0;
+	while (y < map_size_y)
+	{
+		x = 0;
+		while (x < map_size_x)
+		{
+			if (heat_map[y][x] == 0)
+			{
+				init_heat_map_two(x, y);
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+static int put_index_h(int x, int y, short min)
+{
+	if (min > heat_map[y][x] && heat_map[y][x] > 0)
+			min = heat_map[y][x];
+	return (min);
+}
+
+int		put_index_heat(int x, int y, int *flag)
+{
+	short min;
+
+	min = 3200;
+	if (x + 1 < map_size_x)
+		min = put_index_h(x + 1, y, min);
+	if (x - 1 >= 0)
+		min = put_index_h(x - 1, y, min);
+	if (x + 1 < map_size_x && y + 1 < map_size_y)
+		min = put_index_h(x + 1, y + 1, min);
+	if (x - 1 >= 0 && y + 1 < map_size_y)
+		min = put_index_h(x - 1, y + 1, min);
+	if (x - 1 >= 0 && y - 1 >= 0)
+		min = put_index_h(x - 1, y - 1, min);
+	if (x + 1 < map_size_x && y - 1 >= 0)
+		min = put_index_h(x + 1, y - 1, min);
+	if (heat_map[y][x] >= 0 && min > heat_map[y][x] && min != 3200)
+	{
+		heat_map[y][x] = min + 1;
+		*flag = 1;
+	}
+	return (1);
+}
+
+void	put_index()
+{
+	int x;
+	int y;
+	int flag;
+	int min;
+
+	flag = 1;
+	while (flag == 1)
+	{
+		y = 0;
+		flag = 0;
+		while (y < map_size_y)
+		{
+			x = 0;
+			while (x < map_size_x)
+			{
+				put_index_heat(x, y, &flag);
+				x++;
+			}
+			y++;
+		}
+	}
+}
 
 void	ft_record_map(VERTICAL y)
 {
@@ -44,13 +172,15 @@ void	ft_record_map(VERTICAL y)
 		free(str);
 		index++;
 	}
+	create_heat_map();
+	init_heat_map();
+	put_index();
 }
 
 void	start_pos()
 {
 	un_int i;
 	static un_int j;
-	printf ("j = {%d}\n", map_size_y);
 
 	if (j == map_size_y)
 		return ;
@@ -74,7 +204,6 @@ void	start_pos()
 			}
 		}
 	}
-	printf ("x_my = {%d} x_en = {%d} y_my = {%d} y_en = {%d}\n",start_my_x, start_enemy_x, start_my_y, start_enemy_y);
 }
 
 int		mem_alloc_card(const char *str)
@@ -96,9 +225,9 @@ int		mem_alloc_card(const char *str)
 		playing_field[index] = (char *)malloc((x + 1) * (sizeof(char)));
 		index++;
 	}
-	ft_record_map(y);
 	map_size_x = x;
 	map_size_y = y;
+	ft_record_map(y);
 	start_pos();
 	return (SUCSES);
 }
@@ -144,16 +273,12 @@ void	ft_record_figures(VERTICAL y)
 	str = NULL;
 	status_read = 0;
 	index = 0;
-	while ((status_read = get_next_line(0, &str)) && (index < y))
+	while (index < y)
 	{
-		if (status_read == 0)
-		{
-			ft_printf ("ERROR read gnl!!\n{ft_record_figures}\n"); // fix 
-			return ;
-		}
+		get_next_line(0, &str);
 		figures_field[index] = ft_strcpy(figures_field[index], str);
-		// ft_printf ("%s\n", figures_field[index]);
 		index++;
+		free(str);
 	}
 	real_pos_figures();
 }
@@ -169,13 +294,13 @@ void	mem_alloc_figures(const char *str)
 	size_map = (char *)str + (LEN_FIGURES + 1);
 	y = ft_atoi(size_map);
 	size_map += ft_lennumb(y) + 1;
-	x =  ft_atoi(size_map);
+	x = ft_atoi(size_map);
 	figures_field = (char **)malloc((y + 1) * (sizeof(char *)));
 	figures_field[y] = NULL;
 	while (index < y)
 	{
-		 figures_field[index] = (char *)malloc((x + 1) * (sizeof(char)));
-		 index++;
+		figures_field[index] = (char *)malloc((x + 1) * (sizeof(char)));
+		index++;
 	}
 	ft_record_figures(y);
 	g_piece.size_x = x;
@@ -201,7 +326,7 @@ int        last_try()
             ret = placable(i, i2);
             if (ret == 0)
             {
-                ft_printf ("%d %d\n",g_piece.final_x, g_piece.final_y);
+                ft_printf ("%d %d\n",g_piece.final_y, g_piece.final_x);
                 return (0);
             }
         }
@@ -232,12 +357,13 @@ char	**ft_read_map(void)
 			{
 				if (last_try() == 1)
 				{
-					ft_printf ("%d %d\n", g_piece.final_x, g_piece.final_y);
+					ft_printf ("%d %d\n", g_piece.final_y, g_piece.final_x);
 					exit (1);
 				}
 			}
 		}
-			free(map);
+			// free(map);
+			// map = NULL;
 		}
 	// ft_printf ("player = {%s}\n", player_my);
 	// for (int i = 0; playing_field[i]; i++)

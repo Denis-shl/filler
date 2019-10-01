@@ -46,6 +46,8 @@ int     placable_two(int count, int i, int i2)
     {
         g_piece.final_x = i2;
         g_piece.final_y = i;
+        start_my_x = g_piece.final_x;
+        start_my_y = g_piece.final_y;
         return (0);
     }
     return (1);
@@ -105,6 +107,7 @@ int        contact_l()
             ret = placable(i, j);
             if (ret == 0)
             {
+                ft_printf("%d %d\n", g_piece.final_y, g_piece.final_x);
                 return (0);
             }
 			j--;

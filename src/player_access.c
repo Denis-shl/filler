@@ -14,7 +14,6 @@ void	ft_identify_player(const char *str)
 */ 
 	if (ft_strstr(str, NAME_PLAYER) == NULL)
 	{
-		ft_printf ("NOT NAME!!\n"); // debug
 		return ;
 	}
 	else
