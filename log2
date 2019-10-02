@@ -3,10 +3,10 @@
 # 42 / filler VM Developped by: Hcao - Abanlin #
 #                                              #
 # -------------------------------------------- #
-launched resources/players/abanlin.filler
-$$$ exec p1 : [resources/players/oargrave.filler]
-launched resources/players/mdubus.filler
-$$$ exec p2 : [resources/players/mdubus.filler]
+launched ressources-filler/players/superjeannot.filler
+$$$ exec p1 : [ressources-filler/players/superjeannot.filler]
+launched ./mdubus.filler
+$$$ exec p2 : [./mdubus.filler]
 Plateau 15 17:
     01234567890123456
 000 .................
@@ -24,10 +24,9 @@ Plateau 15 17:
 012 ..............X..
 013 .................
 014 .................
-Piece 2 3:
-*..
-***
-<got (O): [7, 0]
+Piece 1 2:
+**
+<got (O): [8, 2]
 Plateau 15 17:
     01234567890123456
 000 .................
@@ -37,21 +36,14 @@ Plateau 15 17:
 004 .................
 005 .................
 006 .................
-007 o................
-008 ooo..............
+007 .................
+008 ..oo.............
 009 .................
 010 .................
 011 .................
 012 ..............X..
 013 .................
 014 .................
-Piece 2 1:
-*
-*
-<got (X): [11, 10]
-Piece 2 1:
-*
-*
-<got (O): [0, 0]
-== O fin: 1
-== X fin: 0
+Piece 2 2:
+.*
+.*

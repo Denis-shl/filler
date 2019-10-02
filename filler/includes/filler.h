@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filler.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdubus <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 16:51:53 by mdubus            #+#    #+#             */
-/*   Updated: 2019/10/01 13:13:18 by oargrave         ###   ########.fr       */
+/*   Updated: 2017/10/06 21:26:42 by mdubus           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct	s_filler
 	char		letter_me;
 	char		letter_ennemy;
 	int			is_zero;
-	int			w_board; // y
-	int			h_board; // x
+	int			w_board;
+	int			h_board;
 	int			w_piece;
 	int			h_piece;
 	int			x;

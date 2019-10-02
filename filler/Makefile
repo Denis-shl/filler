@@ -52,13 +52,13 @@ SRCS_VISU	=	$(addprefix $(SRCDIR_VISU)/, $(SRC_VISU))
 OBJS_VISU	=	$(addprefix $(OBJDIR_VISU)/, $(SRC_VISU:.c=.o))
 
 
-all: directory $(NAME)
+all: directory $(NAME) $(VISU)
 
 $(NAME): $(OBJDIR_ALGO) $(LIB) $(OBJS_ALGO) $(INCLUDE)
 	@$(CC) $(FLAGS) -o $@ $(OBJS_ALGO) $(LIBLINK)
 
-#$(VISU): $(OBJDIR_VISU) $(LIB) $(OBJS_VISU) $(INCLUDE)
-#	@$(CC) $(FLAGS) -o $@ $(OBJS_VISU) $(LIBLINK) $(LIB_VISU)
+$(VISU): $(OBJDIR_VISU) $(LIB) $(OBJS_VISU) $(INCLUDE)
+	@$(CC) $(FLAGS) -o $@ $(OBJS_VISU) $(LIBLINK) $(LIB_VISU)
 
 $(LIB):
 	@make -C $(LIBDIR)

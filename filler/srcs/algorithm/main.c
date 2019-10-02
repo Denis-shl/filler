@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdubus <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/07 16:39:10 by mdubus            #+#    #+#             */
-/*   Updated: 2017/10/07 10:10:45 by mdubus           ###   ########.fr       */
+/*   Updated: 2019/10/02 21:18:13 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ int			main(void)
 			return (1);
 		if (stock_piece(&f) == 1)
 			return (1);
-		resolve(&f);
+		{
+			for (int i = 0; f.piece[i];i++)
+				printf ("%s", f.piece[i]);
+		}
+		resolve(&f); //поиск координат 
 		print_coor(&f);
 		free_all(&f);
 	}

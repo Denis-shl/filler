@@ -308,15 +308,15 @@ void	mem_alloc_figures(const char *str)
 	return ;
 }
 
-int        last_try()
+int		last_try()
 {
-    int    i;
-    int    i2;
-    int    ret;
-    
-    i = -1;
-    g_piece.final_x = 0;
-    g_piece.final_y = 0;
+	int		i;
+	int		i2;
+	int		ret;
+
+	i = -1;
+	g_piece.final_x = 0;
+	g_piece.final_y = 0;
     ret = 0;
     while (++i < (int)map_size_y - 1)
     {
@@ -353,13 +353,7 @@ char	**ft_read_map(void)
 		else if (ft_strncmp(map, FIGURES, LEN_FIGURES) == 0)
 		{
 			mem_alloc_figures(map);
-			if (finding_place_for_figure() == 1)
-			{
-				if (last_try() == 1)
-				{
-					ft_printf ("%d %d\n", g_piece.final_y, g_piece.final_x);
-					exit (1);
-				}
+			finding_place_for_figure();
 			}
 		}
 			// free(map);

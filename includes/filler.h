@@ -31,7 +31,7 @@ typedef unsigned int	un_int;
 char	**ft_read_map(void);
 void	ft_identify_player(const char *str);
 int		ft_free(void);
-int		finding_place_for_figure(void);
+void	finding_place_for_figure(void);
 void	print_result();
 int     contact(void);
 int     placable_two(int count, int i, int i2);
@@ -42,6 +42,8 @@ int     contact_r();
 typedef struct s_piece
 {
 	un_int	real_x;
+	short	bl_f;
+	short	flag;
 	un_int	real_y;
 	un_int	size_x;
 	un_int	size_y;

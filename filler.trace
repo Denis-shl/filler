@@ -1,6 +1,4 @@
-seed = 6499
-X: error on input
-./oargrave.filler: Segfault at 1
+seed = 3256
 resources/players/abanlin.filler won
 Score:
-2AGAINST1
+1AGAINST0
