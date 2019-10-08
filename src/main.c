@@ -10,6 +10,10 @@ void	init_struct()
 	g_piece.size_y = 0;
 	g_piece.start_x = 0;
 	g_piece.start_y = 0;
+	g_piece.nbr_contact = 0;
+	g_piece.tmp_x = 0;
+	g_piece.tmp_y = 0;
+	g_piece.flag = 0;
 }
 
 int		main (int argc, char **argv)

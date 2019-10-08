@@ -354,11 +354,11 @@ char	**ft_read_map(void)
 		{
 			mem_alloc_figures(map);
 			finding_place_for_figure();
-			}
+			printf("%d %d\n",g_piece.tmp_y, g_piece.tmp_x);
 		}
+	}
 			// free(map);
 			// map = NULL;
-		}
 	// ft_printf ("player = {%s}\n", player_my);
 	// for (int i = 0; playing_field[i]; i++)
 	// 	ft_printf ("%s\n", playing_field[i]);

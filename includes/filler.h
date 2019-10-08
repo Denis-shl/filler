@@ -56,6 +56,16 @@ typedef struct s_piece
 	int		tmp_x;
 	int		tmp_y;
 	int		nbr_contact;
+	int		score;
+	int		score2;
+	int		tmp_x2;
+	int		tmp_y2;
+	int		x;
+	int		y;
+	int		tempj;
+	int		tempi;
+	int		i;
+	int		j;
 }t_piece;
 
 t_piece				g_piece;
