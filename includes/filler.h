@@ -29,7 +29,7 @@ typedef unsigned int	un_int;
 */
 
 void	ft_read_map(void);
-int		ft_identify_player(const char *str);
+int		ft_identify_player(char *str);
 int		ft_free(void);
 void	finding_place_for_figure(void);
 void	print_result();

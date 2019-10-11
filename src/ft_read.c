@@ -12,6 +12,8 @@ un_int		start_my_y = 0;
 un_int		start_enemy_x = 0;
 un_int		start_enemy_y = 0;
 short		**heat_map = NULL;
+/* debug files*/
+FILE *g_fd;
 
 int		ft_lennumb(int num)
 {
@@ -164,7 +166,6 @@ void	ft_record_map(VERTICAL y)
 	str = NULL;
 	index = 0;
 	get_next_line(0, &str);
-	free(str);
 	while (index < y)
 	{
 		get_next_line(0, &str);
@@ -206,18 +207,23 @@ void	start_pos()
 	}
 }
 
-int		mem_alloc_card(const char *str)
+int		mem_alloc_card(char *str)
 {
 	char			*size_map;
 	VERTICAL		y;
 	HORIZONTAL		x;
 	un_int			index;
-	
+
+	fprintf (g_fd, "mem alloc card = {%s}\n", str);
 	index = 0;
+	if (ft_strstr(str, MAPS) == NULL)
+		return (0);
 	size_map = (char *)str + (LEN_MAPS + 1);
 	y = ft_atoi(size_map);
 	size_map += ft_lennumb(y) + 1;
 	x = ft_atoi(size_map);
+
+	fprintf (g_fd, "x = {%d}, y = {%d}\n", x, y);
 	playing_field = (char **)malloc((y + 1) * (sizeof(char *)));
 	playing_field[y] = NULL;
 	while (index < y)
@@ -229,6 +235,20 @@ int		mem_alloc_card(const char *str)
 	map_size_y = y;
 	ft_record_map(y);
 	start_pos();
+	/* debug info*/
+	fprintf (g_fd, "map\n");
+	for (int i = 0; playing_field[i]; i++)
+		fprintf (g_fd, "%2d %s\n",i, playing_field[i]);
+	fprintf (g_fd, "heat map\n");
+	for (int i = 0; i < y; i++)
+	{
+		for (int j = 0; j < x; j++)
+		{
+			fprintf (g_fd, "%d", heat_map[i][j]);
+		}
+		fprintf (g_fd, "\n");
+	}
+
 	return (SUCSES);
 }
 
@@ -264,32 +284,41 @@ void	real_pos_figures(void)
 	g_piece.real_y = (g_piece.end_y - g_piece.start_y) + 1;
 }
 
-void	ft_record_figures(VERTICAL y)
+int		ft_record_figures(VERTICAL y, HORIZONTAL x)
 {
-	char *str;
-	int status_read;
-	un_int index;
+	char	*str;
+	int		status_read;
+	int		index;
 
 	str = NULL;
 	status_read = 0;
 	index = 0;
+	fprintf (g_fd, "ft record figures\n y = %d\n", y);
 	while (index < y)
 	{
-		get_next_line(0, &str);
+		if ((status_read =read(0, str, x)) != 1)
+			return (0);
 		figures_field[index] = ft_strcpy(figures_field[index], str);
 		index++;
 		free(str);
 	}
 	real_pos_figures();
+	return(1);
 }
 
-void	mem_alloc_figures(const char *str)
+int		mem_alloc_figures(char *str)
 {
 	char			*size_map;
 	VERTICAL		y;
 	HORIZONTAL		x;
 	un_int			index;
+	
 
+	fprintf (g_fd, "debug mem alloc figures\n");
+	fprintf (g_fd, "do str = %s\n", str);
+	if (get_next_line(0, &str) != 1  || ft_strstr(str, FIGURES) == NULL)
+		return (0);
+	fprintf (g_fd, "new  str = %s\n", str);
 	index = 0;
 	size_map = (char *)str + (LEN_FIGURES + 1);
 	y = ft_atoi(size_map);
@@ -297,41 +326,21 @@ void	mem_alloc_figures(const char *str)
 	x = ft_atoi(size_map);
 	figures_field = (char **)malloc((y + 1) * (sizeof(char *)));
 	figures_field[y] = NULL;
+	free(str);
 	while (index < y)
 	{
 		figures_field[index] = (char *)malloc((x + 1) * (sizeof(char)));
 		index++;
 	}
-	ft_record_figures(y);
+	if (ft_record_figures(y, x) == 0)
+		return (0);
 	g_piece.size_x = x;
 	g_piece.size_y = y;
-	return ;
-}
 
-int		last_try()
-{
-	int		i;
-	int		i2;
-	int		ret;
-
-	i = -1;
-	g_piece.final_x = 0;
-	g_piece.final_y = 0;
-    ret = 0;
-    while (++i < (int)map_size_y - 1)
-    {
-        i2 = -1;
-        while (++i2 < (int)map_size_x - 1)
-        {
-            ret = placable(i, i2);
-            if (ret == 0)
-            {
-                ft_printf ("%d %d\n",g_piece.final_y, g_piece.final_x);
-                return (0);
-            }
-        }
-    }
-    return (1);
+	fprintf (g_fd, "figures field\n");
+	for (int i = 0; figures_field[i]; i++)
+		fprintf (g_fd, "%s\n", figures_field[i]);
+	return (1);
 }
 
 void		ft_read_map(void)
@@ -340,25 +349,21 @@ void		ft_read_map(void)
 	int		status_read;
 
 	map = NULL;
+	g_fd = fopen("debager", "w++");
+	if (ft_identify_player(map) == 0)
+		return ;
 	while (1)
 	{
-		status_read = get_next_line(0, &map);
-		if (status_read == -1 || status_read == 0)
+		if ((status_read = get_next_line(0, &map)) != 1)
 			return ;
-		if (ft_strncmp(map, PLAYER, LEN_PLAYER) == 0)
-		{
-			if (ft_identify_player(map) == 0)
-				return ;
-		}
-		else if (ft_strncmp(map, MAPS, LEN_MAPS) == 0)
-			mem_alloc_card(map);
-		else if (ft_strncmp(map, FIGURES, LEN_FIGURES) == 0)
-		{
-			mem_alloc_figures(map);
-			finding_place_for_figure();
-			ft_printf("%d %d\n", g_piece.tmp_y, g_piece.tmp_x);
-			ft_free();	
-		}
+		if (mem_alloc_card(map) == 0)
+			return ;
+		if (mem_alloc_figures(map) == 0)
+			return ;
+		finding_place_for_figure();
+		printf("%d %d\n", g_piece.tmp_y, g_piece.tmp_x);
+		fclose(g_fd);
 	}
-	// ft_free();
+	fclose(g_fd);
+	ft_free();
 }
