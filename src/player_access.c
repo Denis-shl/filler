@@ -5,25 +5,24 @@ char	*player_en = NULL;
 char	play_one[] = "Oo";
 char	play_two[] = "Xx";
 
-void	ft_identify_player(const char *str)
+int	ft_identify_player(const char *str)
 {
 	char			*str_name;
 /*
 **  $$$ exec p2
 **  01234567890
 */ 
-	if (ft_strstr(str, NAME_PLAYER) == NULL)
+	if (ft_strstr(str, NAME_PLAYER) == NULL && player_my == NULL)
 	{
-		return ;
+		return (0);
 	}
-	else
+	else if (player_my == NULL)
 	{
 		str_name = ((char *)str + (LEN_PLAYER + 2));
 		if (str_name[0] == '1')
 		{
 			player_my = play_one;
 			player_en = play_two;
-
 		}
 		else if (str_name[0] == '2')
 		{
@@ -31,4 +30,5 @@ void	ft_identify_player(const char *str)
 			player_en = play_one;
 		}
 	}
+	return (1);
 }

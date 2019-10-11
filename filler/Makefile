@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mdubus <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/05 19:12:36 by mdubus            #+#    #+#              #
-#    Updated: 2017/10/06 20:11:33 by mdubus           ###   ########.fr        #
+#    Updated: 2019/10/10 16:28:56 by oargrave         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	clang
 NAME		=	mdubus.filler
 VISU		=	visu
-FLAGS		=	-Wall -Wextra -Werror
+FLAGS		= -g
 LIBDIR		=	libft
 LIBLINK		=	-L $(LIBDIR) -lft
 LIB 		=	$(LIBDIR)/libft.a

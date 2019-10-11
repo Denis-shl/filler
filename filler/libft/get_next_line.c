@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdubus <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/02 10:30:33 by mdubus            #+#    #+#             */
-/*   Updated: 2017/10/06 10:56:47 by mdubus           ###   ########.fr       */
+/*   Updated: 2019/10/10 16:53:03 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static int	backslash_in_rest(int fd, char **line, t_dlist **mew, char **buffer)
 	return (0);
 }
 
-int			get_next_line(const int fd, char **line)
+int			get_next_line(const int fd, char **line) // &(line) -> char *line;
 {
 	t_gnl			gnl;
 

@@ -41,24 +41,27 @@ int flag_start(int *x, int *y)
 	if (g_piece.flag == 1)
 	{
 		g_piece.flag = 0;
-		if (*x + 1 < g_piece.size_x)
+		if (((*x) + 1) < g_piece.size_x)
 			(*x)++;
-		else if (*y + 1 < g_piece.size_y)
+		else if (((*y) + 1) < g_piece.size_y)
 		{
 			*x = 0;
 			(*y)++;
 		}
 		else
+		{
 			return (0);
+		}
 	}
 	return (1);
 }
 
 int next_start(int *x, int *y)
 {
+
 	if (flag_start(x, y) == 0)
 		return (0);
-	if (*x == 0 && *y == 0 && figures_field[*y][*x] == '*' && figures_field)
+	if (*x == 0 && *y == 0 && figures_field[*y][*x] == '*')
 	{
 		g_piece.flag = 1;
 		return (1);
@@ -67,7 +70,6 @@ int next_start(int *x, int *y)
 	{
 		while (*y < g_piece.size_y)
 		{
-			*x = 0;
 			while (*x < g_piece.size_x)
 			{
 				if (figures_field[*y][*x] == '*' && figures_field)
@@ -77,11 +79,13 @@ int next_start(int *x, int *y)
 				}
 				(*x)++;
 			}
+			*x = 0;
 			(*y)++;
 		}
 	}
 	return (0);
 }
+
 int count_score(int i, int j, int *score)
 {
 	if (g_piece.y + j - g_piece.tempj < 0 || g_piece.y + j - g_piece.tempj >= map_size_y ||
@@ -109,7 +113,7 @@ int c_before(int x, int y, int *score)
 		{
 			if (figures_field[y][x] == '*')
 			{
-				if (count_score(y, x, score) == 1)
+				if (count_score(x, y, score) == 1)
 					return (1);
 			}
 			x--;
@@ -127,7 +131,6 @@ int c_after(int x, int y, int *score)
 
 	while (y < g_piece.size_y)
 	{
-		x = 0;
 		while (x < g_piece.size_x)
 		{
 			if (figures_field[y][x] == '*')
@@ -137,6 +140,7 @@ int c_after(int x, int y, int *score)
 			}
 			x++;
 		}
+		x = 0;
 		y++;
 	}
 	return (0);
@@ -174,18 +178,22 @@ void get_score(int score)
 void algol(int x, int y)
 {
 	int score;
+	int index;
 
 	g_piece.i = 0;
 	g_piece.j = 0;
-	while (next_start(&g_piece.i , &g_piece.j) == 1)
+	index = 0;	
+	while ((next_start(&g_piece.i , &g_piece.j) == 1))
 	{
 		score = 0;
 		g_piece.start_x = g_piece.i;
 		g_piece.start_y = g_piece.j;
-		if ((c_before(g_piece.i, g_piece.j, &score)) == 0 && (c_after(g_piece.i, g_piece.j, &score) == 0))
+		if ((c_before(g_piece.i, g_piece.j, &score)) == 0
+			&& (c_after(g_piece.i, g_piece.j, &score) == 0))
 		{
 			get_score(score);
 		}
+		index++;
 	}
 	if (g_piece.score == 0)
 	{
@@ -194,13 +202,13 @@ void algol(int x, int y)
 		g_piece.tmp_y = g_piece.tmp_y2;
 	}
 }
+
 void finding_place_for_figure()
 {
 	g_piece.x = 0;
 	g_piece.y = 0;
 
 	blank_field();
-	printf ("ZERO = %d\n",g_piece.bl_f);
 	while (g_piece.y < map_size_y)
 	{
 		g_piece.x = 0;
@@ -208,7 +216,6 @@ void finding_place_for_figure()
 		{
 			if (heat_map[g_piece.y][g_piece.x] == -2)
 			{
-				printf ("ALGOL\n");
 				algol(g_piece.x, g_piece.y);
 			}
 			g_piece.x++;

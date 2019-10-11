@@ -48,7 +48,7 @@ static void	create_heat_map(void)
 			else if ((playing_field[index][jindex] == player_en[0]
 			|| playing_field[index][jindex] == player_en[1]))
 				heat_map[index][jindex] = -1;
-				jindex++;
+			jindex++;
 		}
 		index++;
 	}
@@ -100,7 +100,7 @@ void	init_heat_map()
 static int put_index_h(int x, int y, short min)
 {
 	if (min > heat_map[y][x] && heat_map[y][x] > 0)
-			min = heat_map[y][x];
+		min = heat_map[y][x];
 	return (min);
 }
 
@@ -168,7 +168,7 @@ void	ft_record_map(VERTICAL y)
 	while (index < y)
 	{
 		get_next_line(0, &str);
-		playing_field[index] =  ft_strcpy(playing_field[index], str + 4);
+		playing_field[index] = ft_strcpy(playing_field[index], str + 4);
 		free(str);
 		index++;
 	}
@@ -333,7 +333,8 @@ int		last_try()
     }
     return (1);
 }
-char	**ft_read_map(void)
+
+void		ft_read_map(void)
 {
 	char	*map;
 	int		status_read;
@@ -341,29 +342,23 @@ char	**ft_read_map(void)
 	map = NULL;
 	while (1)
 	{
-		get_next_line(0, &map);
+		status_read = get_next_line(0, &map);
+		if (status_read == -1 || status_read == 0)
+			return ;
 		if (ft_strncmp(map, PLAYER, LEN_PLAYER) == 0)
 		{
-			ft_identify_player(map);
+			if (ft_identify_player(map) == 0)
+				return ;
 		}
 		else if (ft_strncmp(map, MAPS, LEN_MAPS) == 0)
-		{
 			mem_alloc_card(map);
-		}
 		else if (ft_strncmp(map, FIGURES, LEN_FIGURES) == 0)
 		{
 			mem_alloc_figures(map);
 			finding_place_for_figure();
-			printf("%d %d\n",g_piece.tmp_y, g_piece.tmp_x);
+			ft_printf("%d %d\n", g_piece.tmp_y, g_piece.tmp_x);
+			ft_free();	
 		}
 	}
-			// free(map);
-			// map = NULL;
-	// ft_printf ("player = {%s}\n", player_my);
-	// for (int i = 0; playing_field[i]; i++)
-	// 	ft_printf ("%s\n", playing_field[i]);
-	// for (int i = 0; figures_field[i]; i++)
-	// 	ft_printf ("%s\n",figures_field[i]);
-	ft_free();
-	return (NULL);
+	// ft_free();
 }

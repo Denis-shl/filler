@@ -6,7 +6,7 @@
 /*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/11 19:20:44 by mdubus            #+#    #+#             */
-/*   Updated: 2019/10/02 21:18:13 by oargrave         ###   ########.fr       */
+/*   Updated: 2019/10/10 16:35:30 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,20 @@ static int	flag_star(t_filler *f, int *i, int *j)
 			(*j)++;
 		}
 		else
+		{
+			printf ("else\n");
 			return (0);
+		}
 	}
 	return (1);
 }
 
 int			search_next_star(t_filler *f, int *i, int *j)
 {
+
+	printf ("x = %d\n", f->w_piece);
+	printf ("y = %d\n", f->h_piece);
+	
 	if (flag_star(f, i, j) == 0)
 		return (0);
 	if (*i == 0 && *j == 0 && f->piece && f->piece[*j][*i] == '*')
