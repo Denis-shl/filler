@@ -15,8 +15,8 @@ int	ft_identify_player(char *str)
 */ 
 	if (!(str = ft_strnew(1024)))
 		return (0);
-	// if ((s_read = get_next_line(0, &str)) != 1)
-	// 	return (0);
+	if (read_str(str))
+		return (-1);
 	if (ft_strstr(str, PLAYER) != NULL && ft_strstr(str, NAME_PLAYER) != NULL)
 	{
 		str_name = str + 10;

@@ -1,5 +1,6 @@
-seed = 2077
+seed = 6967
 X: timedout
+./oargrave.filler: Segfault at 0
 resources/players/carli.filler won
 Score:
 1AGAINST0

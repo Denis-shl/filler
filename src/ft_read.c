@@ -393,10 +393,14 @@ void		ft_read_map(void)
 	map = NULL;
 	g_fd = fopen("debager", "w++");
 	if (ft_identify_player(map) == 0)
+	{
+		free(map);
 		return ;
+	}
+	free(map);
 	while (1)
 	{
-		if ((status_read = get_next_line(0, &map)) != 1)
+		if (read_str((map = ft_strnew(1024))))
 			return ;
 		if (mem_alloc_card(map) == 0)
 			return ;

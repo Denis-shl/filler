@@ -36,8 +36,11 @@ void	print_result();
 int     contact(void);
 int     placable_two(int count, int i, int i2);
 int     placable(int i, int i2);
-int     contact_l();
-int     contact_r();
+/* new ver*/
+
+int		read_str(char *str);
+void	append_str(char *str, char *buff);
+
 
 typedef struct s_piece
 {
