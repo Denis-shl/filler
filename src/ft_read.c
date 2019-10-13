@@ -284,23 +284,62 @@ void	real_pos_figures(void)
 	g_piece.real_y = (g_piece.end_y - g_piece.start_y) + 1;
 }
 
+void	append_str(char *str, char *buff)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	str[i] = buff[0];
+}
+
+int		read_str(char *str)
+{
+	char	buff[1];
+
+	while (1)
+	{
+		read(0, buff, 1);
+		if (buff[0] == '\0')
+			return (-1);
+		append_str(str, buff);
+		if (buff[0] == '\n')
+			return (0);
+	}
+}
+
 int		ft_record_figures(VERTICAL y, HORIZONTAL x)
 {
 	char	*str;
 	int		status_read;
 	int		index;
+	int		jindex;
+	char *buf;
 
 	str = NULL;
 	status_read = 0;
 	index = 0;
 	fprintf (g_fd, "ft record figures\n y = %d\n", y);
+	fprintf (g_fd, "ft record figures\n x = %d\n", x);
 	while (index < y)
 	{
-		if ((status_read =read(0, str, x)) != 1)
+		if (!(buf = ft_strnew(x + 1)))
 			return (0);
-		figures_field[index] = ft_strcpy(figures_field[index], str);
+		if (read_str(buf))
+			return (-1);
+		// if ((status_read = get_next_line(0, &str)) != 1)
+		// 	return (0);
+		// figures_field[index] = ft_strcpy(figures_field[index], str);
+		jindex = 0;
+		while (jindex < x)
+		{
+			figures_field[index][jindex] = buf[jindex];
+			jindex++;
+		}
+		figures_field[index][jindex] = '\0';
 		index++;
-		free(str);
+		free(buf);
 	}
 	real_pos_figures();
 	return(1);
@@ -311,14 +350,17 @@ int		mem_alloc_figures(char *str)
 	char			*size_map;
 	VERTICAL		y;
 	HORIZONTAL		x;
-	un_int			index;
+	int				index;
 	
 
 	fprintf (g_fd, "debug mem alloc figures\n");
 	fprintf (g_fd, "do str = %s\n", str);
 	if (get_next_line(0, &str) != 1  || ft_strstr(str, FIGURES) == NULL)
+	{
+		fprintf (g_fd, "FIGURE ERROR = %s\n", str);
 		return (0);
-	fprintf (g_fd, "new  str = %s\n", str);
+	}
+	fprintf (g_fd, "FIGUre   str = %s\n", str);
 	index = 0;
 	size_map = (char *)str + (LEN_FIGURES + 1);
 	y = ft_atoi(size_map);
@@ -360,7 +402,7 @@ void		ft_read_map(void)
 			return ;
 		if (mem_alloc_figures(map) == 0)
 			return ;
-		finding_place_for_figure();
+		// finding_place_for_figure();
 		printf("%d %d\n", g_piece.tmp_y, g_piece.tmp_x);
 		fclose(g_fd);
 	}

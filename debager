@@ -34,6 +34,11 @@ heat map
 666666666678910111213
 debug mem alloc figures
 do str = Plateau 15 17:
-new  str = Piece 2 1:
+FIGUre   str = Piece 2 2:
 ft record figures
  y = 2
+ft record figures
+ x = 2
+figures field
+*.
+*.
