@@ -15,6 +15,27 @@ short		**heat_map = NULL;
 /* debug files*/
 FILE *g_fd;
 
+int gnl(int fd, char **line)
+{
+	int ret;
+	char *tmp;
+	char buf[2];
+
+	if (!line)
+		return (-1);
+	*line = ft_strnew(0);
+	ret = 0;
+	ft_bzero(buf, 2);
+	while ((read(fd, buf, 1) > 0) && buf[0] != '\n' && buf[0] != '\0')
+	{
+		ret++;
+		tmp = ft_strjoin(*line, buf);
+		free(*line);
+		*line = tmp;
+	}
+	return (ret);
+}
+
 int		ft_lennumb(int num)
 {
 	int		len;
@@ -165,11 +186,14 @@ void	ft_record_map(VERTICAL y)
 	status_read = 0;
 	str = NULL;
 	index = 0;
-	get_next_line(0, &str);
+	// get_next_line(0, &str);
+	gnl(0, &str);
 	while (index < y)
 	{
-		get_next_line(0, &str);
+		// get_next_line(0, &str);
+		gnl(0, &str);
 		playing_field[index] = ft_strcpy(playing_field[index], str + 4);
+		fprintf (g_fd, "%s\n", str);
 		free(str);
 		index++;
 	}
@@ -216,13 +240,14 @@ int		mem_alloc_card(char *str)
 
 	fprintf (g_fd, "mem alloc card = {%s}\n", str);
 	index = 0;
+	if (str[0] == '\0')
+		gnl(0, &str);
 	if (ft_strstr(str, MAPS) == NULL)
 		return (0);
 	size_map = (char *)str + (LEN_MAPS + 1);
 	y = ft_atoi(size_map);
 	size_map += ft_lennumb(y) + 1;
 	x = ft_atoi(size_map);
-
 	fprintf (g_fd, "x = {%d}, y = {%d}\n", x, y);
 	playing_field = (char **)malloc((y + 1) * (sizeof(char *)));
 	playing_field[y] = NULL;
@@ -324,24 +349,25 @@ int		ft_record_figures(VERTICAL y, HORIZONTAL x)
 	fprintf (g_fd, "ft record figures\n x = %d\n", x);
 	while (index < y)
 	{
-		if (!(buf = ft_strnew(x + 1)))
-			return (0);
-		if (read_str(buf))
-			return (-1);
 		// if ((status_read = get_next_line(0, &str)) != 1)
 		// 	return (0);
-		// figures_field[index] = ft_strcpy(figures_field[index], str);
-		jindex = 0;
-		while (jindex < x)
+		str = ft_strnew(x + 1);
+		// if (gnl(0, &str) == -1)
+		// 	fprintf(g_fd, "ERROR READ\n");
+		if (index == y - 1)
+			read(0, str, x);
+		else
 		{
-			figures_field[index][jindex] = buf[jindex];
-			jindex++;
+				read(0, str, x);
 		}
-		figures_field[index][jindex] = '\0';
+		
+		fprintf (g_fd, "index = %d\nread = %s\n", index, str);
+		str[x] = '\0';
+		figures_field[index] = ft_strcpy(figures_field[index], str);
 		index++;
-		free(buf);
+		free(str);
 	}
-	real_pos_figures();
+	// real_pos_figures();
 	return(1);
 }
 
@@ -353,7 +379,7 @@ int		mem_alloc_figures(char *str)
 	int				index;
 	
 
-	fprintf (g_fd, "debug mem alloc figures\n");
+	fprintf (g_fd, "DEBUG mem alloc figures\n");
 	fprintf (g_fd, "do str = %s\n", str);
 	if (get_next_line(0, &str) != 1  || ft_strstr(str, FIGURES) == NULL)
 	{
@@ -385,26 +411,56 @@ int		mem_alloc_figures(char *str)
 	return (1);
 }
 
+void	init_struct()
+{
+	g_piece.real_x = 0;
+	g_piece.bl_f = 0;
+	g_piece.flag = 0;
+	g_piece.real_y = 0;
+	g_piece.size_x = 0;
+	g_piece.size_y = 0;
+	g_piece.start_x = 0;
+	g_piece.start_y = 0;
+	g_piece.end_x = 0;
+	g_piece.end_y = 0;
+	g_piece.final_x = 0;
+	g_piece.final_y = 0;
+	g_piece.tmp_x = 0;
+	g_piece.tmp_y = 0;
+	g_piece.nbr_contact = 0;
+	g_piece.score = 0;
+	g_piece.score2 = 0;
+	g_piece.tmp_x2 = 0;
+	g_piece.tmp_y2 = 0;
+	g_piece.x = 0;
+	g_piece.y = 0;
+	g_piece.tempj = 0;
+	g_piece.tempi = 0;
+	g_piece.i = -1;
+	g_piece.j = 0;
+}
+
 void		ft_read_map(void)
 {
 	char	*map;
 	int		status_read;
 
+	init_struct();
 	map = NULL;
 	g_fd = fopen("debager", "w++");
 	if (ft_identify_player(map) == 0)
 		return ;
 	while (1)
 	{
-		if ((status_read = get_next_line(0, &map)) != 1)
+		if (mem_alloc_card() == 0)
 			return ;
-		if (mem_alloc_card(map) == 0)
+		if (mem_alloc_figures() == 0)
 			return ;
-		if (mem_alloc_figures(map) == 0)
-			return ;
-		// finding_place_for_figure();
+		finding_place_for_figure();
 		printf("%d %d\n", g_piece.tmp_y, g_piece.tmp_x);
-		fclose(g_fd);
+		ft_free();
+		init_struct();
+		free(map);
 	}
 	fclose(g_fd);
 	ft_free();

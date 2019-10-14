@@ -2,10 +2,13 @@
 
 extern char	**playing_field;
 extern char **figures_field;
-
+extern short		**heat_map;
+extern VERTICAL		map_size_y;
+extern HORIZONTAL	map_size_x;
 int		ft_free()
 {
-	un_int index;
+	int index;
+	int jindex;
 
 	if (playing_field != NULL)
 	{
@@ -28,6 +31,15 @@ int		ft_free()
 		}
 		free(figures_field);
 		figures_field = NULL;
+	}
+	if (heat_map != NULL)
+	{
+		index = 0;
+		while (index < map_size_y)
+		{
+			free(heat_map[index]);
+			index++;
+		}
 	}
 	return (SUCSES);
 }

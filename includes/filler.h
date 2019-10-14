@@ -32,12 +32,12 @@ void	ft_read_map(void);
 int		ft_identify_player(char *str);
 int		ft_free(void);
 void	finding_place_for_figure(void);
-void	print_result();
-int     contact(void);
-int     placable_two(int count, int i, int i2);
-int     placable(int i, int i2);
-int     contact_l();
-int     contact_r();
+// void	print_result();
+// int     contact(void);
+// int     placable_two(int count, int i, int i2);
+// int     placable(int i, int i2);
+// int     contact_l();
+// int     contact_r();
 
 typedef struct s_piece
 {
