@@ -242,14 +242,10 @@ class Plateau
 	end
 
 	def change_data(row, col, char)
-        @map_table.each do | item |
-            item.upcase!
-        end
 		for y in 0..(@piece_row - 1)
 			for x in 0..(@piece_col - 1)
 				if (piece_char(x, y) == '*')
-                    #@map_table[y + row][x + col] = char
-                    @map_table[y + row][x + col] = char.downcase
+					@map_table[y + row][x + col] = char
 				end
 			end
 		end

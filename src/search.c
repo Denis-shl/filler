@@ -203,7 +203,7 @@ void algol(int x, int y)
 	}
 }
 
-void finding_place_for_figure()
+int	finding_place_for_figure()
 {
 	g_piece.x = 0;
 	g_piece.y = 0;
@@ -222,4 +222,5 @@ void finding_place_for_figure()
 		}
 		g_piece.y++;
 	}
+	return (1);
 }

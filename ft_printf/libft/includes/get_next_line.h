@@ -6,7 +6,7 @@
 /*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 12:24:00 by oargrave          #+#    #+#             */
-/*   Updated: 2019/10/13 13:29:08 by oargrave         ###   ########.fr       */
+/*   Updated: 2019/10/14 16:24:58 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include "libft.h"
 
+# define CHECK(x) if (!x) return (-1);
 int	get_next_line(int fd, char **line);
 // typedef struct			s_dlist
 // {

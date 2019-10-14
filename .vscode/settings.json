@@ -1,8 +1,10 @@
 {
     "files.associations": {
-        "filler.h": "c",
-        "header.h": "c",
-        "libft.h": "c",
-        "ft_list.h": "c"
-    }
+		"filler.h": "c",
+		"header.h": "c",
+		"libft.h": "c",
+		"ft_list.h": "c",
+		"ios": "c",
+		"*.tcc": "c"
+	}
 }

@@ -33,6 +33,5 @@ int		main (int argc, char **argv)
 {
 	init_struct();
 	ft_read_map();
-	argc = 1;
 	return (0);
 }
