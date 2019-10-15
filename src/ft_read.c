@@ -22,7 +22,6 @@ static void	create_heat_map(void)
 	un_int jindex;
 
 	index = 0;
-	jindex = 0;
 	heat_map = (short **)malloc(map_size_y * (sizeof(short *)));
 	while (index < map_size_y)
 	{
@@ -245,6 +244,23 @@ void		trace_fix()
 	}
 }
 
+
+
+void		ft_del()
+{
+	int index;
+	int jindex;
+
+	index = 0;
+	jindex = 0;
+	while (index < map_size_y)
+	{
+		free(heat_map[index]);
+	}
+	free(heat_map);
+	heat_map = NULL;
+}
+
 void		ft_read_map(void)
 {
 	char	*map;
@@ -263,7 +279,7 @@ void		ft_read_map(void)
 	{
 		if (map_and_figr() == 1)
 		{
-			init_struct();
+			// init_struwct()w;
 			create_heat_map();
 			init_heat_map();
 			put_index();
@@ -275,6 +291,7 @@ void		ft_read_map(void)
 			ft_putnbr(g_piece.tmp_x);
 			ft_putchar('\n');
 			fprintf (g_fd, "result: x = {%d} y = {%d}\n", g_piece.tmp_x, g_piece.tmp_y);
+			ft_del();
 		}
 		else
 		{
