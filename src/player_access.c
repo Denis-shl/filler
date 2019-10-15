@@ -63,7 +63,6 @@ void	name_game(char *str)
 		player_en = play_one;
 	}
 	/*debug*/
-	fprintf (g_fd, "my = %s\nen = %s\n", player_my, player_en);
 }
 
 int	ft_identify_player(char *str)

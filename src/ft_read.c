@@ -178,8 +178,6 @@ void		size_figr(char *str)
 	int				index;
 	
 
-	fprintf (g_fd, "debug mem alloc figures\n");
-	fprintf (g_fd, "do str = %s\n", str);
 	index = 0;
 	size_map = (char *)str + (LEN_FIGURES + 1);
 	y = ft_atoi(size_map);
@@ -210,8 +208,8 @@ int		map_and_figr()
 		str = ft_strnew(1024);
 		read_str(str);
 		if (str == NULL || str[0] == '\0' || str[0] == '\n')
-			break ;
-		// fprintf(stderr, "%s", str);
+			return (-1) ;
+
 		if (str && str[0] == '0')
 			ft_strcpy(playing_field[++jindex], str + 4);
 		else if (str && ft_strstr(str, FIGURES) != NULL)
@@ -226,24 +224,9 @@ int		map_and_figr()
 			}
 		}
 	}
-	fprintf(g_fd, "str = {%s}\n", str);
 	free(str);
 	return (0);
 }
-
-void		trace_fix()
-{
-	
-	for (int i = 0; map_size_y > i; i++)
-	{
-		for(int j = 0; j < map_size_x; j++)
-		{
-			fprintf(g_fd, "%4d", heat_map[i][j]);
-		}
-		fprintf (g_fd, "\n");
-	}
-}
-
 
 
 void		ft_del()
@@ -268,7 +251,6 @@ void		ft_read_map(void)
 	int index = 0;
 
 	map = NULL;
-	g_fd = fopen("debager", "w++");
 	if (ft_identify_player(map) == 0)
 	{
 		free(map);
@@ -279,26 +261,19 @@ void		ft_read_map(void)
 	{
 		if (map_and_figr() == 1)
 		{
-			// init_struwct()w;
 			create_heat_map();
 			init_heat_map();
 			put_index();
-			trace_fix();
 			finding_place_for_figure();
-			fprintf (stderr, "{%d} {%d}\n", g_piece.tmp_x, g_piece.tmp_y);
 			ft_putnbr(g_piece.tmp_y);
 			ft_putchar(' ');
 			ft_putnbr(g_piece.tmp_x);
 			ft_putchar('\n');
-			fprintf (g_fd, "result: x = {%d} y = {%d}\n", g_piece.tmp_x, g_piece.tmp_y);
-			ft_del();
 		}
 		else
 		{
-			fprintf (g_fd, "ERROR\n");
-			continue ;
+			return ;
 		}
 	}
-	fclose(g_fd);
 	ft_free();
 }

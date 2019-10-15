@@ -207,6 +207,12 @@ int	finding_place_for_figure()
 {
 	g_piece.x = 0;
 	g_piece.y = 0;
+	g_piece.score = 0;
+	g_piece.score2 = 0;
+	g_piece.tmp_x = 0;
+	g_piece.tmp_y = 0;
+	g_piece.tmp_x2 = 0;
+	g_piece.tmp_y2 = 0;
 
 	blank_field();
 	while (g_piece.y < map_size_y)
