@@ -62,7 +62,6 @@ void	name_game(char *str)
 		player_my = play_two;
 		player_en = play_one;
 	}
-	/*debug*/
 }
 
 int	ft_identify_player(char *str)
@@ -87,14 +86,3 @@ int	ft_identify_player(char *str)
 	}
 	return (0);
 }
-
-// # -------------- VM  version 1.1 ------------- #
-// #                                              #
-// # 42 / filler VM Developped by: Hcao - Abanlin #
-// #                                              #
-// # -------------------------------------------- #
-// launched players/carli.filler
-// $$$ exec p1 : [players/carli.filler]
-// launched ../../oargrave.filler
-// $$$ exec p2 : [../../oargrave.filler]
-// Plateau 15 17:

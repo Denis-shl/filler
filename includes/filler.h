@@ -28,20 +28,24 @@ typedef unsigned int un_int;
 ** func read virtual map and tetremins
 */
 
-void ft_read_map(void);
-int ft_identify_player(char *str);
-int ft_free(void);
-int finding_place_for_figure(void);
-void print_result();
-int contact(void);
-int placable_two(int count, int i, int i2);
-int placable(int i, int i2);
+void    ft_read_map(void);
+int     ft_identify_player(char *str);
+int     ft_free(void);
+int     finding_place_for_figure(void);
+void    print_result();
+int     contact(void);
+int     placable_two(int count, int i, int i2);
+int     placable(int i, int i2);
 /* new ver*/
 
-int read_str(char *str);
-void append_str(char *str, char *buff);
-int ft_lennumb(int num);
-void init_struct();
+int     read_str(char *str);
+void    append_str(char *str, char *buff);
+int     ft_lennumb(int num);
+void    init_struct();
+void	create_heat_map(void);
+void	init_heat_map_two(int x, int y);
+int		put_index_heat(int x, int y, int *flag);
+void	init_heat_map();
 
 typedef struct s_piece
 {
