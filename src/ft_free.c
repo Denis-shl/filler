@@ -1,33 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/16 11:19:10 by oargrave          #+#    #+#             */
+/*   Updated: 2019/10/16 11:19:19 by oargrave         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/filler.h"
 
-extern char	**playing_field;
-extern char **figures_field;
+extern char	**g_map;
+extern char **g_fmap;
 
-int		ft_free()
+int		ft_free(void)
 {
-	un_int index;
+	int			index;
 
-	if (playing_field != NULL)
+	if (g_map != NULL)
 	{
 		index = 0;
-		while (playing_field[index] != NULL)
+		while (g_map[index] != NULL)
 		{
-			free(playing_field[index]);
+			free(g_map[index]);
 			index++;
 		}
-		free(playing_field);
-		playing_field = NULL;
+		free(g_map);
+		g_map = NULL;
 	}
-	if (figures_field != NULL)
+	if (g_fmap != NULL)
 	{
 		index = 0;
-		while (figures_field[index] != NULL)
+		while (g_fmap[index] != NULL)
 		{
-			free(figures_field[index]);
+			free(g_fmap[index]);
 			index++;
 		}
-		free(figures_field);
-		figures_field = NULL;
+		free(g_fmap);
+		g_fmap = NULL;
 	}
 	return (SUCSES);
+}
+
+void	ft_del_char(char *str)
+{
+	if (str != NULL)
+		free(str);
 }

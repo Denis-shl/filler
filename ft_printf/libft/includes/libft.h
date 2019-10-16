@@ -6,7 +6,7 @@
 /*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 12:05:21 by yquaro            #+#    #+#             */
-/*   Updated: 2019/09/25 14:50:53 by oargrave         ###   ########.fr       */
+/*   Updated: 2019/09/06 10:05:30 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include "../ft_list/ft_list.h"
 # include "../ft_buffer/ft_buffer.h"
 # include "../ft_matr/ft_matr.h"
-# include "get_next_line.h"
-# include <unistd.h>
 
 void				*ft_memset (void *destination, int c, size_t n);
 void				*ft_bzero (void *s, size_t n);

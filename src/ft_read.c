@@ -1,34 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_read.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/16 11:18:57 by oargrave          #+#    #+#             */
+/*   Updated: 2019/10/16 12:19:05 by oargrave         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/filler.h"
 
-char		**playing_field = NULL;
-char		**figures_field = NULL;
-extern char	*player_my;
-extern char *player_en;
-VERTICAL	map_size_y;
-HORIZONTAL	map_size_x;
-un_int		start_my_x = 0;
-un_int		start_my_y = 0;
-un_int		start_enemy_x = 0;
-un_int		start_enemy_y = 0;
-short		**heat_map = NULL;
+char		**g_map = NULL;
+char		**g_fmap = NULL;
+short		**g_hmap = NULL;
+extern char	*g_play_my;
+extern char *g_play_en;
+int			g_size_y;
+int			g_size_x;
 
-void	put_index()
+void	put_index(void)
 {
-	int x;
-	int y;
-	int flag;
-	int min;
+	int		x;
+	int		y;
+	int		flag;
 
 	flag = 1;
 	while (flag == 1)
 	{
 		y = 0;
 		flag = 0;
-		while (y < map_size_y)
+		while (y < g_size_y)
 		{
 			x = 0;
-			while (x < map_size_x)
+			while (x < g_size_x)
 			{
 				put_index_heat(x, y, &flag);
 				x++;
@@ -38,120 +44,77 @@ void	put_index()
 	}
 }
 
-
-void	append_str(char *str, char *buff)
+void	size_figr(char *str)
 {
-	int		i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	str[i] = buff[0];
-}
-
-int		read_str(char *str)
-{
-	char	buff[1];
-
-	while (1)
-	{
-		read(0, buff, 1);
-		if (buff[0] == '\0')
-			return (-1);
-		append_str(str, buff);
-		if (buff[0] == '\n')
-			return (0);
-	}
-}
-
-
-void		size_figr(char *str)
-{
-	char			*size_map;
-	VERTICAL		y;
-	HORIZONTAL		x;
-	int				index;
-	
+	char	*size_map;
+	int		y;
+	int		x;
+	int		index;
 
 	index = 0;
 	size_map = (char *)str + (LEN_FIGURES + 1);
 	y = ft_atoi(size_map);
 	size_map += ft_lennumb(y) + 1;
 	x = ft_atoi(size_map);
-	figures_field = (char **)malloc((y + 1) * (sizeof(char *)));
-	figures_field[y] = NULL;
-	free(str);
+	g_fmap = (char **)malloc((y + 1) * (sizeof(char *)));
+	g_fmap[y] = NULL;
 	while (index < y)
 	{
-		figures_field[index] = (char *)malloc((x + 1) * (sizeof(char)));
+		g_fmap[index] = (char *)malloc((x + 1) * (sizeof(char)));
 		index++;
 	}
-	g_piece.size_x = x;
-	g_piece.size_y = y;
+	g_pi.size_x = x;
+	g_pi.size_y = y;
 }
 
-int		map_and_figr()
+int		map_figr(char *str, int *index, int *jindex)
 {
-	char *str;
-	int index;
-	int jindex;
-
-	index = -1;
-	jindex = -1;
-	while (1)
+	if (str && str[0] == '0')
+		ft_strcpy(g_map[++(*jindex)], str + 4);
+	else if (str && ft_strstr(str, FIGURES) != NULL)
+		size_figr(str);
+	else if (str && (str[0] == '.' || str[0] == '*'))
 	{
-		str = ft_strnew(1024);
-		read_str(str);
-		if (str == NULL || str[0] == '\0' || str[0] == '\n')
-			return (-1) ;
-
-		if (str && str[0] == '0')
-			ft_strcpy(playing_field[++jindex], str + 4);
-		else if (str && ft_strstr(str, FIGURES) != NULL)
-			size_figr(str);
-		else if (str && (str[0] == '.' || str[0] == '*'))
+		ft_strcpy(g_fmap[++(*index)], str);
+		if ((*index) == g_pi.size_y - 1)
 		{
-			ft_strcpy(figures_field[++index], str);
-			if (index == g_piece.size_y - 1)
-			{
-				free(str);
-				return(1) ;
-			}
+			free(str);
+			return (1);
 		}
 	}
-	free(str);
 	return (0);
 }
 
-
-void		ft_del()
+int		map_and_figr(void)
 {
-	int index;
-	int jindex;
+	char			*str;
+	int				index;
+	int				jindex;
+	int				status;
 
-	index = 0;
-	jindex = 0;
-	while (index < map_size_y)
+	index = -1;
+	jindex = -1;
+	str = ft_strnew(1024);
+	while (1)
 	{
-		free(heat_map[index]);
+		ft_bzero(str, 1024);
+		read_str(str);
+		if (str == NULL || str[0] == '\0' || str[0] == '\n')
+		{
+			ft_del_char(str);
+			return (-1);
+		}
+		status = map_figr(str, &index, &jindex);
+		if (status == 1)
+			return (1);
 	}
-	free(heat_map);
-	heat_map = NULL;
+	return (0);
 }
 
-void		ft_read_map(void)
+void	ft_read_map(void)
 {
-	char	*map;
-	int		status_read;
-	int index = 0;
-
-	map = NULL;
-	if (ft_identify_player(map) == 0)
-	{
-		free(map);
+	if (ft_identify_player() == 0)
 		return ;
-	}
-	free(map);
 	while (1)
 	{
 		if (map_and_figr() == 1)
@@ -160,15 +123,15 @@ void		ft_read_map(void)
 			init_heat_map();
 			put_index();
 			finding_place_for_figure();
-			ft_putnbr(g_piece.tmp_y);
+			ft_putnbr(g_pi.tmp_y);
 			ft_putchar(' ');
-			ft_putnbr(g_piece.tmp_x);
+			ft_putnbr(g_pi.tmp_x);
 			ft_putchar('\n');
 		}
 		else
 		{
+			ft_free();
 			return ;
 		}
 	}
-	ft_free();
 }

@@ -12,27 +12,13 @@
 
 #include "ft_list.h"
 
-t_list    *ft_lstnew(void const *content, size_t content_size)
+t_list				*ft_lstnew(const char *content)
 {
-    t_list    *point;
-    
-    if (!(point = (t_list*)malloc(sizeof(*point))))
-        return (NULL);
-    if (!content)
-    {
-        point->content = NULL;
-        point->content_size = 0;
-    }
-    else
-    {
-        if (!(point->content = malloc(content_size)))
-        {
-            free(point);
-            return (NULL);
-        }
-        ft_memcpy(point->content, content, content_size);
-        point->content_size = content_size;
-    }
-    point->next = NULL;
-    return (point);
+	t_list				*list;
+
+	if ((list = (t_list *)malloc(sizeof(t_list))) == NULL)
+		return (NULL);
+	list->content = ft_strdup(content);
+	list->next = NULL;
+	return (list);
 }
