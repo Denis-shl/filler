@@ -6,7 +6,7 @@
 /*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 12:13:56 by oargrave          #+#    #+#             */
-/*   Updated: 2019/10/16 12:49:35 by oargrave         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:50:23 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define NAME_PLAYER "oargrave.filler"
 # define FAIL -1
 # define SUCSES 1
+# define CHECK_STR ".XxOo"
 # include "../ft_printf/includes/header.h"
 
 typedef struct	s_piece
@@ -51,7 +52,7 @@ int				ft_identify_player(void);
 int				ft_free(void);
 int				finding_place_for_figure(void);
 void			print_result(void);
-void			ft_del_char(char *str);
+int				ft_del_char(char *str);
 int				read_str(char *str);
 void			append_str(char *str, char *buff);
 int				ft_lennumb(int num);
@@ -64,5 +65,8 @@ int				next_start(int *x, int *y);
 void			algol(int x, int y);
 int				c_after(int x, int y, int *score);
 int				c_before(int x, int y, int *score);
+void			del_hmap(void);
+void			del_figure(void);
+int				check_map();
 
 #endif

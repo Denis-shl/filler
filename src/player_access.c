@@ -6,7 +6,7 @@
 /*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 11:18:52 by oargrave          #+#    #+#             */
-/*   Updated: 2019/10/16 12:19:05 by oargrave         ###   ########.fr       */
+/*   Updated: 2019/10/16 14:28:43 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void	size_map(char *str)
 	y = ft_atoi(size_map);
 	size_map += ft_lennumb(y) + 1;
 	x = ft_atoi(size_map);
-	g_map = (char **)malloc((y + 1) * (sizeof(char *)));
-	g_map[y] = NULL;
+	g_map = (char **)malloc((y + 2) * (sizeof(char *)));
+	g_map[y + 1] = NULL;
 	while (index < y)
 	{
-		g_map[index] = (char *)malloc((x + 1) * (sizeof(char)));
+		g_map[index] = (char *)malloc((x + 2) * (sizeof(char)));
 		index++;
 	}
 	g_size_x = x;

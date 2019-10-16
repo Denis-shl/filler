@@ -6,7 +6,7 @@
 /*   By: oargrave <oargrave@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 11:18:57 by oargrave          #+#    #+#             */
-/*   Updated: 2019/10/16 12:19:05 by oargrave         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:53:04 by oargrave         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	size_figr(char *str)
 	g_fmap[y] = NULL;
 	while (index < y)
 	{
-		g_fmap[index] = (char *)malloc((x + 1) * (sizeof(char)));
+		g_fmap[index] = (char *)malloc((x + 2) * (sizeof(char)));
 		index++;
 	}
 	g_pi.size_x = x;
@@ -78,7 +78,8 @@ int		map_figr(char *str, int *index, int *jindex)
 		ft_strcpy(g_fmap[++(*index)], str);
 		if ((*index) == g_pi.size_y - 1)
 		{
-			free(str);
+			if (check_map() == -1)
+				return (-1);
 			return (1);
 		}
 	}
@@ -98,7 +99,7 @@ int		map_and_figr(void)
 	while (1)
 	{
 		ft_bzero(str, 1024);
-		read_str(str);
+		status = read_str(str);
 		if (str == NULL || str[0] == '\0' || str[0] == '\n')
 		{
 			ft_del_char(str);
@@ -106,7 +107,9 @@ int		map_and_figr(void)
 		}
 		status = map_figr(str, &index, &jindex);
 		if (status == 1)
-			return (1);
+			return (ft_del_char(str));
+		else if (status == -1)
+			return (0);
 	}
 	return (0);
 }
@@ -127,6 +130,9 @@ void	ft_read_map(void)
 			ft_putchar(' ');
 			ft_putnbr(g_pi.tmp_x);
 			ft_putchar('\n');
+			del_figure();
+			del_hmap();
+			g_fmap = NULL;
 		}
 		else
 		{

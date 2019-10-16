@@ -5,6 +5,7 @@
 		"libft.h": "c",
 		"ft_list.h": "c",
 		"ios": "c",
-		"*.tcc": "c"
+		"*.tcc": "c",
+		"sstream": "c"
 	}
 }
